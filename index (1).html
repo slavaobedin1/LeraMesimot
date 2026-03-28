@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏠 מטלות בית</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #1a1a24;
+    --surface2: #22222f;
+    --border: #2e2e42;
+    --accent: #7c6af7;
+    --accent2: #f7a26a;
+    --text: #e8e8f0;
+    --text-muted: #7a7a9a;
+    --danger: #f76a6a;
+    --success: #6af7a2;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1a24 0%, #16162a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .app-title {
+    font-size: 26px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  .app-icon { font-size: 28px; }
+
+  /* Rooms tabs */
+  .rooms-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 0;
+    scrollbar-width: none;
+  }
+  .rooms-tabs::-webkit-scrollbar { display: none; }
+
+  .room-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 16px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 12px 12px 0 0;
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .room-tab:hover { color: var(--text); background: rgba(124, 106, 247, 0.08); }
+
+  .room-tab.active {
+    color: var(--accent);
+    background: rgba(124, 106, 247, 0.12);
+  }
+
+  .room-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px 3px 0 0;
+  }
+
+  .room-tab .tab-emoji { font-size: 22px; }
+  .room-tab .tab-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: var(--accent2);
+    color: #1a1a24;
+    font-size: 10px;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Main content */
+  .main { padding: 24px 16px; max-width: 720px; margin: 0 auto; }
+
+  /* Room header */
+  .room-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .room-info { display: flex; align-items: center; gap: 14px; }
+
+  .room-big-emoji {
+    font-size: 44px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+  }
+  .room-big-emoji:hover { transform: scale(1.15); }
+
+  .room-name-area h2 {
+    font-size: 22px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .room-name-area h2:hover { color: var(--accent); }
+
+  .room-name-area .task-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .edit-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-top: 2px;
+  }
+
+  .add-task-btn {
+    background: linear-gradient(135deg, var(--accent), #9b8bf8);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(124, 106, 247, 0.3);
+  }
+  .add-task-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124, 106, 247, 0.4); }
+  .add-task-btn:active { transform: translateY(0); }
+
+  /* Task list */
+  .tasks-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .task-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    animation: slideIn 0.25s ease-out;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .task-item:hover { border-color: var(--accent); background: var(--surface2); }
+  .task-item.done { opacity: 0.5; }
+  .task-item.done .task-text { text-decoration: line-through; color: var(--text-muted); }
+
+  .task-checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    border: 2px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-size: 13px;
+  }
+  .task-checkbox:hover { border-color: var(--accent); background: rgba(124,106,247,0.1); }
+  .task-checkbox.checked { background: var(--accent); border-color: var(--accent); }
+
+  .task-emoji-btn {
+    font-size: 22px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 2px;
+    border-radius: 6px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .task-emoji-btn:hover { transform: scale(1.2); }
+
+  .task-text {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .task-text:hover { background: rgba(124,106,247,0.08); }
+
+  .task-actions { display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s; }
+  .task-item:hover .task-actions { opacity: 1; }
+
+  .task-action-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .task-action-btn:hover { background: var(--surface2); color: var(--text); }
+  .task-action-btn.delete:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state .empty-emoji { font-size: 56px; margin-bottom: 16px; display: block; }
+  .empty-state p { font-size: 16px; margin-bottom: 20px; }
+
+  /* Stats bar */
+  .stats-bar {
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .stats-text { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+
+  /* Modals */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.15s;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    width: 90%;
+    max-width: 420px;
+    animation: popIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .modal-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    direction: rtl;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 14px;
+  }
+  .modal-input:focus { border-color: var(--accent); }
+
+  .modal-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  /* Emoji picker */
+  .emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-bottom: 16px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .emoji-grid::-webkit-scrollbar { width: 4px; }
+  .emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .emoji-opt {
+    font-size: 22px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    background: transparent;
+  }
+  .emoji-opt:hover { background: var(--surface2); transform: scale(1.15); }
+  .emoji-opt.selected { border-color: var(--accent); background: rgba(124,106,247,0.15); }
+
+  .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+
+  .btn-cancel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-cancel:hover { color: var(--text); }
+
+  .btn-save {
+    background: linear-gradient(135deg, var(--accent), #9b8bf8);
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(124,106,247,0.3);
+  }
+  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(124,106,247,0.4); }
+
+  /* Inline edit */
+  .inline-edit-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--accent);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+    outline: none;
+    padding: 2px 4px;
+    direction: rtl;
+  }
+
+  .emoji-search {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    direction: rtl;
+    outline: none;
+    margin-bottom: 8px;
+  }
+  .emoji-search:focus { border-color: var(--accent); }
+
+  .emoji-categories {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .emoji-cat-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    transition: all 0.15s;
+  }
+  .emoji-cat-btn.active { background: rgba(124,106,247,0.2); border-color: var(--accent); color: var(--accent); }
+  .emoji-cat-btn:hover { color: var(--text); }
+
+  @media (max-width: 480px) {
+    .header { padding: 14px 12px 0; }
+    .main { padding: 16px 10px; }
+    .room-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .task-actions { opacity: 1; }
+    .emoji-grid { grid-template-columns: repeat(7, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="app-icon">🏠</span>
+    <span class="app-title">מטלות הבית</span>
+  </div>
+  <div class="rooms-tabs" id="roomsTabs"></div>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<!-- Modal for adding/editing task -->
+<div class="modal-overlay" id="taskModal" style="display:none" onclick="handleModalOverlayClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 id="modalTitle">➕ מטלה חדשה</h3>
+    <label class="modal-label">שם המטלה</label>
+    <input class="modal-input" id="taskNameInput" placeholder="לדוגמה: לשטוף כלים..." />
+    <label class="modal-label">אימוג'י</label>
+    <div class="emoji-categories" id="emojiCategories"></div>
+    <input class="emoji-search" id="emojiSearch" placeholder="חפש אימוג'י..." oninput="filterEmojis()" />
+    <div class="emoji-grid" id="emojiGrid"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeTaskModal()">ביטול</button>
+      <button class="btn-save" onclick="saveTask()">שמור</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for editing room -->
+<div class="modal-overlay" id="roomModal" style="display:none" onclick="handleRoomModalOverlayClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>✏️ עריכת חדר</h3>
+    <label class="modal-label">שם החדר</label>
+    <input class="modal-input" id="roomNameInput" placeholder="שם החדר..." />
+    <label class="modal-label">אימוג'י לחדר</label>
+    <div class="emoji-categories" id="roomEmojiCategories"></div>
+    <input class="emoji-search" id="roomEmojiSearch" placeholder="חפש אימוג'י..." oninput="filterRoomEmojis()" />
+    <div class="emoji-grid" id="roomEmojiGrid"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeRoomModal()">ביטול</button>
+      <button class="btn-save" onclick="saveRoom()">שמור</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const EMOJI_CATEGORIES = {
+  'בית 🏠': ['🧹','🧺','🧽','🪣','🚿','🛁','🚽','🪥','🧴','🧼','🫧','🪟','🚪','🛏️','🛋️','🪑','🚿','🧸','🪆','🖼️','🪞','🪤','🔧','🔨','🧰','💡','🕯️','🔌','🪜','🧲'],
+  'אוכל 🍽️': ['🍕','🍔','🍣','🥗','🥘','🍜','🥦','🥕','🧅','🧄','🫑','🫐','🍎','🍌','🥝','🍇','🍓','🧃','☕','🍵','🥛','🧹','🫙','🥡','🍱','🥪','🧆','🫕'],
+  'ניקיון 🧹': ['🧹','🧺','🧻','🧽','🪣','🚿','💧','🫧','🧴','🧼','🪥','🫙','♻️','🗑️','🪠','🧯'],
+  'כלים 🔧': ['🔧','🔨','🪛','🪚','🔩','⚙️','🧲','💡','🔌','🪜','🗝️','🔑','🪤','📦','🧰'],
+  'רגשות ✨': ['✅','❌','⚠️','🔥','💧','⭐','🌟','💪','👍','❤️','🎯','🏆','✨','💎','🌈'],
+  'ספורט 💪': ['🏋️','🧘','🚴','🏊','⚽','🎾','🏓','🧗','🤸','🏃','🚶','🤾','🎽','🥊'],
+};
+
+const ALL_EMOJIS = Object.values(EMOJI_CATEGORIES).flat();
+const TASK_EMOJIS = ['✅','🧹','🧺','🧽','🪣','🛁','🚿','🚽','🍽️','🔧','💡','🛏️','🛋️','🧴','🧼','🫧','💧','🔌','🧰','🪥','📦','♻️','🗑️','🌿','🪟','🚪','🧲','🎯','🔥','⭐','💎','🏆','👍','💪'];
+
+let currentSelectedEmoji = '✅';
+let currentRoomSelectedEmoji = '';
+let currentTaskModalMode = 'add'; // 'add' | 'edit'
+let currentEditTaskId = null;
+let currentEmojiCategory = null;
+let currentRoomEmojiCategory = null;
+
+const defaultRooms = [
+  { id: 'kitchen', name: 'מטבח', emoji: '🍳', tasks: [] },
+  { id: 'bathroom', name: 'חדר אמבטיה', emoji: '🛁', tasks: [] },
+  { id: 'toilet', name: 'שירותים', emoji: '🚽', tasks: [] },
+  { id: 'bedroom', name: 'חדר שינה', emoji: '🛏️', tasks: [] },
+  { id: 'office', name: 'חדר עבודה', emoji: '💻', tasks: [] },
+  { id: 'living', name: 'סלון', emoji: '🛋️', tasks: [] },
+  { id: 'balcony', name: 'מרפסת', emoji: '🌿', tasks: [] },
+];
+
+// Load from localStorage
+function loadData() {
+  const saved = localStorage.getItem('homeTasksData_v2');
+  if (saved) {
+    try { return JSON.parse(saved); } catch(e) {}
+  }
+  return { rooms: defaultRooms, activeRoom: 'kitchen' };
+}
+
+function saveData() {
+  localStorage.setItem('homeTasksData_v2', JSON.stringify(appState));
+}
+
+let appState = loadData();
+
+// ===================== RENDER =====================
+function getActiveRoom() {
+  return appState.rooms.find(r => r.id === appState.activeRoom) || appState.rooms[0];
+}
+
+function renderTabs() {
+  const tabs = document.getElementById('roomsTabs');
+  tabs.innerHTML = appState.rooms.map(room => {
+    const done = room.tasks.filter(t => t.done).length;
+    const total = room.tasks.length;
+    const isActive = room.id === appState.activeRoom;
+    return `
+      <button class="room-tab ${isActive ? 'active' : ''}" onclick="switchRoom('${room.id}')">
+        <span class="tab-emoji">${room.emoji}</span>
+        <span>${room.name}</span>
+        ${total > 0 ? `<span class="tab-badge">${total - done}</span>` : ''}
+      </button>
+    `;
+  }).join('');
+}
+
+function renderMain() {
+  const room = getActiveRoom();
+  const done = room.tasks.filter(t => t.done).length;
+  const total = room.tasks.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+
+  let content = `
+    <div class="room-header">
+      <div class="room-info">
+        <span class="room-big-emoji" onclick="openRoomModal()" title="לחץ לעריכה">${room.emoji}</span>
+        <div class="room-name-area">
+          <h2 onclick="openRoomModal()">${room.name}</h2>
+          <div class="task-count">${total} מטלות · ${done} בוצעו</div>
+          <div class="edit-hint">לחץ לעריכת החדר ✏️</div>
+        </div>
+      </div>
+      <button class="add-task-btn" onclick="openAddTaskModal()">
+        <span>+</span> הוסף מטלה
+      </button>
+    </div>
+  `;
+
+  if (total > 0) {
+    content += `
+      <div class="stats-bar">
+        <span class="stats-text">${pct}%</span>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:${pct}%"></div>
+        </div>
+        <span class="stats-text">${done}/${total} ✓</span>
+      </div>
+    `;
+  }
+
+  content += `<div class="tasks-list" id="tasksList">`;
+
+  if (room.tasks.length === 0) {
+    content += `
+      <div class="empty-state">
+        <span class="empty-emoji">${room.emoji}</span>
+        <p>אין מטלות עדיין ב${room.name}</p>
+        <button class="add-task-btn" onclick="openAddTaskModal()" style="margin:0 auto">+ הוסף מטלה ראשונה</button>
+      </div>
+    `;
+  } else {
+    room.tasks.forEach(task => {
+      content += renderTask(task);
+    });
+  }
+
+  content += '</div>';
+  document.getElementById('mainContent').innerHTML = content;
+}
+
+function renderTask(task) {
+  return `
+    <div class="task-item ${task.done ? 'done' : ''}" id="task-${task.id}">
+      <div class="task-checkbox ${task.done ? 'checked' : ''}" onclick="toggleTask('${task.id}')">
+        ${task.done ? '✓' : ''}
+      </div>
+      <button class="task-emoji-btn" onclick="openEditTaskModal('${task.id}', true)" title="שנה אימוג'י">${task.emoji}</button>
+      <span class="task-text" onclick="startInlineEdit('${task.id}')" title="לחץ לעריכה">${task.text}</span>
+      <div class="task-actions">
+        <button class="task-action-btn" onclick="openEditTaskModal('${task.id}')" title="ערוך">✏️</button>
+        <button class="task-action-btn delete" onclick="deleteTask('${task.id}')" title="מחק">🗑️</button>
+      </div>
+    </div>
+  `;
+}
+
+function render() {
+  renderTabs();
+  renderMain();
+}
+
+// ===================== ROOM ACTIONS =====================
+function switchRoom(id) {
+  appState.activeRoom = id;
+  saveData();
+  render();
+}
+
+// ===================== TASK ACTIONS =====================
+function toggleTask(id) {
+  const room = getActiveRoom();
+  const task = room.tasks.find(t => t.id === id);
+  if (task) { task.done = !task.done; saveData(); render(); }
+}
+
+function deleteTask(id) {
+  const room = getActiveRoom();
+  room.tasks = room.tasks.filter(t => t.id !== id);
+  saveData(); render();
+}
+
+function startInlineEdit(id) {
+  const room = getActiveRoom();
+  const task = room.tasks.find(t => t.id === id);
+  if (!task) return;
+
+  const textEl = document.querySelector(`#task-${id} .task-text`);
+  if (!textEl) return;
+
+  const input = document.createElement('input');
+  input.className = 'inline-edit-input';
+  input.value = task.text;
+  input.dir = 'rtl';
+
+  textEl.replaceWith(input);
+  input.focus();
+  input.select();
+
+  const commit = () => {
+    const newText = input.value.trim();
+    if (newText) { task.text = newText; saveData(); }
+    render();
+  };
+
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+    if (e.key === 'Escape') { render(); }
+  });
+}
+
+// ===================== EMOJI GRID =====================
+const EMOJI_CATEGORIES_ROOM = {
+  'בית 🏠': ['🏠','🏡','🏗️','🏢','🏬','🏰','🏯','🗼','⛺','🏕️','🛖','🏚️'],
+  'חדרים 🚪': ['🍳','🛁','🚽','🛏️','💻','🛋️','🌿','🪑','🚿','🪥','🔌','💡','🪜','🧹','🧺'],
+  'כללי ⭐': ['⭐','🌟','✨','🎯','🏆','💎','❤️','🔥','💧','🌈','☀️','🌙','⚡','🌊','🌸','🌺','🌻','🍀','🌴','🌵'],
+};
+
+function buildEmojiGrid(gridId, selectedEmoji, onSelect, category) {
+  const grid = document.getElementById(gridId);
+  const searchId = gridId === 'emojiGrid' ? 'emojiSearch' : 'roomEmojiSearch';
+  const searchTerm = document.getElementById(searchId)?.value?.toLowerCase() || '';
+
+  let emojis;
+  if (category && EMOJI_CATEGORIES[category]) {
+    emojis = EMOJI_CATEGORIES[category];
+  } else if (category && EMOJI_CATEGORIES_ROOM[category]) {
+    emojis = EMOJI_CATEGORIES_ROOM[category];
+  } else {
+    emojis = ALL_EMOJIS;
+  }
+
+  if (searchTerm) {
+    // Just show all when searching
+    emojis = ALL_EMOJIS;
+  }
+
+  grid.innerHTML = emojis.map(e => `
+    <button class="emoji-opt ${e === selectedEmoji ? 'selected' : ''}" onclick="${onSelect}('${e}')">${e}</button>
+  `).join('');
+}
+
+function buildEmojiCategories(containerID, activeCat, clickFn) {
+  const container = document.getElementById(containerID);
+  const cats = containerID.includes('room') ? EMOJI_CATEGORIES_ROOM : EMOJI_CATEGORIES;
+  container.innerHTML = Object.keys(cats).map(cat => `
+    <button class="emoji-cat-btn ${cat === activeCat ? 'active' : ''}" onclick="${clickFn}('${cat}')">${cat}</button>
+  `).join('');
+}
+
+// ===================== TASK MODAL =====================
+function openAddTaskModal() {
+  currentTaskModalMode = 'add';
+  currentEditTaskId = null;
+  currentSelectedEmoji = '✅';
+  currentEmojiCategory = null;
+  document.getElementById('modalTitle').textContent = '➕ מטלה חדשה';
+  document.getElementById('taskNameInput').value = '';
+  document.getElementById('emojiSearch').value = '';
+  buildEmojiCategories('emojiCategories', null, 'selectTaskEmojiCategory');
+  buildEmojiGrid('emojiGrid', currentSelectedEmoji, 'selectTaskEmoji', null);
+  document.getElementById('taskModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('taskNameInput').focus(), 100);
+}
+
+function openEditTaskModal(id, emojiOnly = false) {
+  const room = getActiveRoom();
+  const task = room.tasks.find(t => t.id === id);
+  if (!task) return;
+
+  currentTaskModalMode = 'edit';
+  currentEditTaskId = id;
+  currentSelectedEmoji = task.emoji;
+  currentEmojiCategory = null;
+  document.getElementById('modalTitle').textContent = emojiOnly ? '😊 שנה אימוג\'י' : '✏️ עריכת מטלה';
+  document.getElementById('taskNameInput').value = task.text;
+  document.getElementById('emojiSearch').value = '';
+  buildEmojiCategories('emojiCategories', null, 'selectTaskEmojiCategory');
+  buildEmojiGrid('emojiGrid', currentSelectedEmoji, 'selectTaskEmoji', null);
+  document.getElementById('taskModal').style.display = 'flex';
+  if (!emojiOnly) setTimeout(() => document.getElementById('taskNameInput').focus(), 100);
+}
+
+function selectTaskEmoji(emoji) {
+  currentSelectedEmoji = emoji;
+  buildEmojiGrid('emojiGrid', currentSelectedEmoji, 'selectTaskEmoji', currentEmojiCategory);
+}
+
+function selectTaskEmojiCategory(cat) {
+  currentEmojiCategory = (currentEmojiCategory === cat) ? null : cat;
+  buildEmojiCategories('emojiCategories', currentEmojiCategory, 'selectTaskEmojiCategory');
+  buildEmojiGrid('emojiGrid', currentSelectedEmoji, 'selectTaskEmoji', currentEmojiCategory);
+}
+
+function filterEmojis() {
+  buildEmojiGrid('emojiGrid', currentSelectedEmoji, 'selectTaskEmoji', currentEmojiCategory);
+}
+
+function closeTaskModal() {
+  document.getElementById('taskModal').style.display = 'none';
+}
+
+function handleModalOverlayClick(e) {
+  if (e.target.className.includes('modal-overlay')) closeTaskModal();
+}
+
+function saveTask() {
+  const text = document.getElementById('taskNameInput').value.trim();
+  if (!text) { document.getElementById('taskNameInput').focus(); return; }
+
+  const room = getActiveRoom();
+
+  if (currentTaskModalMode === 'add') {
+    room.tasks.push({
+      id: Date.now().toString(),
+      text,
+      emoji: currentSelectedEmoji,
+      done: false
+    });
+  } else {
+    const task = room.tasks.find(t => t.id === currentEditTaskId);
+    if (task) { task.text = text; task.emoji = currentSelectedEmoji; }
+  }
+
+  saveData();
+  closeTaskModal();
+  render();
+}
+
+// ===================== ROOM MODAL =====================
+function openRoomModal() {
+  const room = getActiveRoom();
+  currentRoomSelectedEmoji = room.emoji;
+  currentRoomEmojiCategory = null;
+  document.getElementById('roomNameInput').value = room.name;
+  document.getElementById('roomEmojiSearch').value = '';
+  buildEmojiCategories('roomEmojiCategories', null, 'selectRoomEmojiCategory');
+  buildRoomEmojiGrid();
+  document.getElementById('roomModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('roomNameInput').focus(), 100);
+}
+
+function buildRoomEmojiGrid() {
+  const allRoomEmojis = Object.values(EMOJI_CATEGORIES_ROOM).flat();
+  const search = document.getElementById('roomEmojiSearch')?.value?.toLowerCase() || '';
+  let emojis;
+  if (currentRoomEmojiCategory && EMOJI_CATEGORIES_ROOM[currentRoomEmojiCategory]) {
+    emojis = EMOJI_CATEGORIES_ROOM[currentRoomEmojiCategory];
+  } else if (currentRoomEmojiCategory && EMOJI_CATEGORIES[currentRoomEmojiCategory]) {
+    emojis = EMOJI_CATEGORIES[currentRoomEmojiCategory];
+  } else {
+    emojis = [...allRoomEmojis, ...ALL_EMOJIS.filter(e => !allRoomEmojis.includes(e))];
+  }
+  if (search) emojis = [...allRoomEmojis, ...ALL_EMOJIS];
+
+  document.getElementById('roomEmojiGrid').innerHTML = emojis.map(e => `
+    <button class="emoji-opt ${e === currentRoomSelectedEmoji ? 'selected' : ''}" onclick="selectRoomEmoji('${e}')">${e}</button>
+  `).join('');
+}
+
+function selectRoomEmoji(emoji) {
+  currentRoomSelectedEmoji = emoji;
+  buildRoomEmojiGrid();
+}
+
+function selectRoomEmojiCategory(cat) {
+  currentRoomEmojiCategory = (currentRoomEmojiCategory === cat) ? null : cat;
+  buildEmojiCategories('roomEmojiCategories', currentRoomEmojiCategory, 'selectRoomEmojiCategory');
+  buildRoomEmojiGrid();
+}
+
+function filterRoomEmojis() { buildRoomEmojiGrid(); }
+
+function closeRoomModal() {
+  document.getElementById('roomModal').style.display = 'none';
+}
+
+function handleRoomModalOverlayClick(e) {
+  if (e.target.className.includes('modal-overlay')) closeRoomModal();
+}
+
+function saveRoom() {
+  const name = document.getElementById('roomNameInput').value.trim();
+  if (!name) { document.getElementById('roomNameInput').focus(); return; }
+  const room = getActiveRoom();
+  room.name = name;
+  room.emoji = currentRoomSelectedEmoji;
+  saveData();
+  closeRoomModal();
+  render();
+}
+
+// Enter to save
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeTaskModal();
+    closeRoomModal();
+  }
+  if (e.key === 'Enter' && document.getElementById('taskModal').style.display !== 'none') {
+    if (document.activeElement === document.getElementById('taskNameInput')) saveTask();
+  }
+  if (e.key === 'Enter' && document.getElementById('roomModal').style.display !== 'none') {
+    if (document.activeElement === document.getElementById('roomNameInput')) saveRoom();
+  }
+});
+
+// Init
+render();
+</script>
+</body>
+</html>
