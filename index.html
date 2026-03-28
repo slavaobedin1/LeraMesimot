@@ -6,7 +6,8 @@
 <title>🏠 מטלות בית</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
+  /* ===== THEMES ===== */
+  body[data-theme="dark"] {
     --bg: #0f0f13;
     --surface: #1a1a24;
     --surface2: #22222f;
@@ -18,7 +19,112 @@
     --danger: #f76a6a;
     --success: #6af7a2;
     --warning: #f7d46a;
-    --radius: 16px;
+    --header-bg: linear-gradient(135deg,#1a1a24,#16162a);
+    --room-header-bg: #22222f;
+    --task-bg: #0f0f13;
+    --shadow: rgba(0,0,0,0.4);
+  }
+  body[data-theme="light"] {
+    --bg: #f4f5fa;
+    --surface: #ffffff;
+    --surface2: #f0f1f8;
+    --border: #dde0f0;
+    --accent: #6355e8;
+    --accent2: #f0812a;
+    --text: #1a1a2e;
+    --text-muted: #8890b0;
+    --danger: #e03c3c;
+    --success: #21a660;
+    --warning: #c99000;
+    --header-bg: linear-gradient(135deg,#ffffff,#f4f5fa);
+    --room-header-bg: #f0f1f8;
+    --task-bg: #f8f9fd;
+    --shadow: rgba(100,100,150,0.08);
+  }
+  body[data-theme="pastel"] {
+    --bg: #fdf0f8;
+    --surface: #ffffff;
+    --surface2: #fce8f5;
+    --border: #f0c8e8;
+    --accent: #d45faa;
+    --accent2: #f0a040;
+    --text: #3a1a30;
+    --text-muted: #b080a0;
+    --danger: #e05050;
+    --success: #40b860;
+    --warning: #c09000;
+    --header-bg: linear-gradient(135deg,#fff0fb,#fce8f5);
+    --room-header-bg: #fce8f5;
+    --task-bg: #fff8fd;
+    --shadow: rgba(200,100,180,0.08);
+  }
+  body[data-theme="mint"] {
+    --bg: #edfaf6;
+    --surface: #ffffff;
+    --surface2: #ddf5ee;
+    --border: #b8e8d8;
+    --accent: #1a9e72;
+    --accent2: #f07040;
+    --text: #0a2e22;
+    --text-muted: #6aaa90;
+    --danger: #e04040;
+    --success: #1a9e72;
+    --warning: #b08000;
+    --header-bg: linear-gradient(135deg,#edfaf6,#d8f5ed);
+    --room-header-bg: #ddf5ee;
+    --task-bg: #f4fdf9;
+    --shadow: rgba(26,158,114,0.08);
+  }
+  body[data-theme="ocean"] {
+    --bg: #0d1f35;
+    --surface: #132840;
+    --surface2: #1a3350;
+    --border: #1e4060;
+    --accent: #38bdf8;
+    --accent2: #fb923c;
+    --text: #e0f0ff;
+    --text-muted: #5a90b8;
+    --danger: #f87171;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --header-bg: linear-gradient(135deg,#132840,#0d1f35);
+    --room-header-bg: #1a3350;
+    --task-bg: #0d1f35;
+    --shadow: rgba(0,20,60,0.4);
+  }
+  body[data-theme="sunset"] {
+    --bg: #1a0f1e;
+    --surface: #2a1530;
+    --surface2: #351840;
+    --border: #502060;
+    --accent: #f97316;
+    --accent2: #ec4899;
+    --text: #fde8ff;
+    --text-muted: #a060c0;
+    --danger: #f87171;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --header-bg: linear-gradient(135deg,#2a1530,#1a0f1e);
+    --room-header-bg: #351840;
+    --task-bg: #1a0f1e;
+    --shadow: rgba(0,0,0,0.5);
+  }
+  body[data-theme="sand"] {
+    --bg: #faf6ee;
+    --surface: #ffffff;
+    --surface2: #f5efe0;
+    --border: #e8d8b8;
+    --accent: #b07030;
+    --accent2: #508060;
+    --text: #2a1a08;
+    --text-muted: #a08060;
+    --danger: #c04030;
+    --success: #407040;
+    --warning: #907020;
+    --header-bg: linear-gradient(135deg,#fff8ee,#f5efe0);
+    --room-header-bg: #f5efe0;
+    --task-bg: #fdf9f2;
+    --shadow: rgba(100,60,20,0.08);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,13 +135,14 @@
     color: var(--text);
     min-height: 100vh;
     direction: rtl;
+    transition: background 0.35s, color 0.35s;
   }
 
   /* ===== HEADER ===== */
   .header {
-    background: linear-gradient(135deg, #1a1a24 0%, #16162a 100%);
+    background: var(--header-bg);
     border-bottom: 1px solid var(--border);
-    padding: 20px 24px;
+    padding: 16px 20px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -43,12 +150,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 2px 12px var(--shadow);
+    transition: background 0.35s, border-color 0.35s;
   }
 
-  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
   .app-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 900;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text;
@@ -56,14 +166,14 @@
     background-clip: text;
   }
 
-  .app-icon { font-size: 26px; }
+  .app-icon { font-size: 24px; }
 
-  .header-stats {
-    font-size: 13px;
-    color: var(--text-muted);
+  .header-center {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .stat-pill {
@@ -76,19 +186,98 @@
     padding: 3px 10px;
     font-size: 12px;
     font-weight: 600;
+    transition: all 0.3s;
   }
-  .stat-pill.done   { border-color: var(--success); color: var(--success); }
-  .stat-pill.pending{ border-color: var(--warning); color: var(--warning); }
-  .stat-pill.na     { border-color: var(--text-muted); color: var(--text-muted); }
+  .stat-pill.done    { border-color: var(--success); color: var(--success); }
+  .stat-pill.pending { border-color: var(--warning); color: var(--warning); }
+  .stat-pill.na      { border-color: var(--text-muted); color: var(--text-muted); }
+
+  /* Theme button */
+  .theme-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .theme-btn:hover { border-color: var(--accent); color: var(--accent); transform: rotate(20deg); }
+
+  /* Theme panel */
+  .theme-panel {
+    position: fixed;
+    top: 70px;
+    left: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    z-index: 200;
+    box-shadow: 0 8px 32px var(--shadow);
+    min-width: 240px;
+    animation: popIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    transition: background 0.35s, border-color 0.35s;
+  }
+  .theme-panel.hidden { display: none; }
+
+  @keyframes popIn {
+    from { opacity:0; transform:scale(0.85) translateY(-10px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+  }
+
+  .theme-panel h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .theme-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .theme-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface2);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .theme-option:hover { border-color: var(--accent); background: var(--surface); }
+  .theme-option.active { border-color: var(--accent); background: var(--surface); }
+
+  .theme-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
 
   /* ===== PAGE ===== */
   .page {
     max-width: 760px;
     margin: 0 auto;
-    padding: 28px 16px 80px;
+    padding: 24px 16px 80px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
   }
 
   /* ===== ROOM CARD ===== */
@@ -97,55 +286,58 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.35s;
+    box-shadow: 0 2px 8px var(--shadow);
   }
-  .room-card:hover { border-color: rgba(124,106,247,0.35); }
+  .room-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
 
   .room-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-bottom: 1px solid var(--border);
-    background: var(--surface2);
+    background: var(--room-header-bg);
+    transition: background 0.35s, border-color 0.35s;
   }
 
-  .room-card-left { display: flex; align-items: center; gap: 13px; }
+  .room-card-left { display: flex; align-items: center; gap: 12px; }
 
   .room-emoji-btn {
-    font-size: 34px;
+    font-size: 32px;
     cursor: pointer;
     border: none;
     background: transparent;
-    padding: 3px;
-    border-radius: 10px;
+    padding: 2px;
+    border-radius: 8px;
     transition: transform 0.2s;
     line-height: 1;
   }
   .room-emoji-btn:hover { transform: scale(1.15); }
 
   .room-title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 800;
     cursor: pointer;
     border-radius: 6px;
     padding: 2px 5px;
     transition: background 0.15s, color 0.15s;
     display: inline-block;
+    color: var(--text);
   }
-  .room-title:hover { background: rgba(124,106,247,0.1); color: var(--accent); }
+  .room-title:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); }
 
   .room-meta {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    margin-top: 3px;
+    margin-top: 2px;
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
   }
 
   .mini-bar {
-    width: 55px; height: 4px;
+    width: 50px; height: 4px;
     background: var(--border);
     border-radius: 99px; overflow: hidden;
     display: inline-block;
@@ -157,14 +349,14 @@
     transition: width 0.4s ease;
   }
 
-  .room-card-right { display: flex; align-items: center; gap: 8px; }
+  .room-card-right { display: flex; align-items: center; gap: 7px; }
 
   .add-task-btn {
-    background: linear-gradient(135deg, var(--accent), #9b8bf8);
+    background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, white));
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 10px;
+    padding: 7px 14px;
+    border-radius: 9px;
     font-family: 'Heebo', sans-serif;
     font-size: 13px;
     font-weight: 700;
@@ -173,10 +365,10 @@
     align-items: center;
     gap: 4px;
     transition: all 0.2s;
-    box-shadow: 0 3px 10px rgba(124,106,247,0.3);
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--accent) 35%, transparent);
     white-space: nowrap;
   }
-  .add-task-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(124,106,247,0.4); }
+  .add-task-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
   .add-task-btn:active { transform: translateY(0); }
 
   .collapse-btn {
@@ -189,7 +381,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     transition: all 0.2s;
     flex-shrink: 0;
   }
@@ -197,38 +389,37 @@
 
   /* Tasks body */
   .room-body {
-    padding: 12px 14px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
+    transition: background 0.35s;
   }
   .room-body.collapsed { display: none; }
 
   /* ===== TASK ITEM ===== */
   .task-item {
-    background: var(--bg);
+    background: var(--task-bg);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 11px 13px;
+    padding: 10px 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 9px;
     transition: all 0.2s;
     animation: slideIn 0.22s ease-out;
   }
 
   @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity:0; transform:translateY(-5px); }
+    to   { opacity:1; transform:translateY(0); }
   }
 
-  .task-item:hover { border-color: rgba(124,106,247,0.4); background: var(--surface2); }
-
-  /* status styles */
-  .task-item[data-status="done"] { border-color: rgba(106,247,162,0.2); }
-  .task-item[data-status="done"] .task-text { text-decoration: line-through; color: var(--text-muted); opacity: 0.7; }
-  .task-item[data-status="na"] { opacity: 0.4; }
-  .task-item[data-status="na"] .task-text { text-decoration: line-through; }
+  .task-item:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); background: var(--surface2); }
+  .task-item[data-status="done"] { border-color: color-mix(in srgb, var(--success) 25%, transparent); }
+  .task-item[data-status="done"] .task-text { text-decoration: line-through; opacity: 0.5; }
+  .task-item[data-status="na"]   { opacity: 0.38; }
+  .task-item[data-status="na"]   .task-text { text-decoration: line-through; }
 
   /* ===== STATUS SELECTOR ===== */
   .status-selector {
@@ -253,27 +444,18 @@
     display: flex;
     align-items: center;
     gap: 3px;
-    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
     line-height: 1;
   }
-  .status-btn:first-child { border-left: none; }
+  .status-btn:last-child { border-right: none; }
   .status-btn:hover { background: var(--surface2); color: var(--text); }
 
-  .status-btn.active-pending {
-    background: rgba(247,212,106,0.15);
-    color: var(--warning);
-  }
-  .status-btn.active-done {
-    background: rgba(106,247,162,0.15);
-    color: var(--success);
-  }
-  .status-btn.active-na {
-    background: rgba(122,122,154,0.15);
-    color: var(--text-muted);
-  }
+  .status-btn.active-pending { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
+  .status-btn.active-done    { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
+  .status-btn.active-na      { background: color-mix(in srgb, var(--text-muted) 15%, transparent); color: var(--text-muted); }
 
   .task-emoji-btn {
-    font-size: 20px;
+    font-size: 19px;
     cursor: pointer;
     border: none;
     background: transparent;
@@ -291,14 +473,15 @@
     cursor: pointer;
     padding: 2px 4px;
     border-radius: 4px;
-    transition: background 0.15s, opacity 0.2s;
+    transition: background 0.15s;
+    color: var(--text);
     min-width: 0;
   }
-  .task-text:hover { background: rgba(124,106,247,0.08); }
+  .task-text:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 
   .task-actions {
     display: flex;
-    gap: 5px;
+    gap: 4px;
     opacity: 0;
     transition: opacity 0.2s;
     flex-shrink: 0;
@@ -309,13 +492,13 @@
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    width: 28px; height: 28px;
+    width: 27px; height: 27px;
     border-radius: 7px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 12px;
     transition: all 0.2s;
   }
   .task-action-btn:hover { background: var(--surface2); color: var(--text); }
@@ -323,7 +506,7 @@
 
   .room-empty {
     text-align: center;
-    padding: 20px;
+    padding: 18px;
     color: var(--text-muted);
     font-size: 13px;
   }
@@ -346,7 +529,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.6);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -354,26 +537,23 @@
     backdrop-filter: blur(6px);
     animation: fadeIn 0.15s;
   }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
   .modal {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 26px;
+    padding: 24px;
     width: 90%;
     max-width: 420px;
     animation: popIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.85); }
-    to { opacity: 1; transform: scale(1); }
+    transition: background 0.35s, border-color 0.35s;
   }
 
   .modal h3 {
     font-size: 18px;
     font-weight: 800;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -393,14 +573,14 @@
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 11px 13px;
+    padding: 10px 13px;
     color: var(--text);
     font-family: 'Heebo', sans-serif;
     font-size: 15px;
     direction: rtl;
     outline: none;
     transition: border-color 0.2s;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .modal-input:focus { border-color: var(--accent); }
 
@@ -408,7 +588,7 @@
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   .emoji-cat-btn {
@@ -422,7 +602,7 @@
     font-family: 'Heebo', sans-serif;
     transition: all 0.15s;
   }
-  .emoji-cat-btn.active { background: rgba(124,106,247,0.2); border-color: var(--accent); color: var(--accent); }
+  .emoji-cat-btn.active { background: color-mix(in srgb,var(--accent) 20%,transparent); border-color: var(--accent); color: var(--accent); }
   .emoji-cat-btn:hover { color: var(--text); }
 
   .emoji-search {
@@ -442,21 +622,21 @@
 
   .emoji-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(8,1fr);
     gap: 3px;
-    margin-bottom: 16px;
-    max-height: 190px;
+    margin-bottom: 14px;
+    max-height: 180px;
     overflow-y: auto;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 8px;
+    padding: 7px;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
 
   .emoji-opt {
-    font-size: 20px;
+    font-size: 19px;
     cursor: pointer;
     padding: 4px;
     border-radius: 7px;
@@ -466,7 +646,7 @@
     background: transparent;
   }
   .emoji-opt:hover { background: var(--surface2); transform: scale(1.15); }
-  .emoji-opt.selected { border-color: var(--accent); background: rgba(124,106,247,0.15); }
+  .emoji-opt.selected { border-color: var(--accent); background: color-mix(in srgb,var(--accent) 15%,transparent); }
 
   .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
 
@@ -474,7 +654,7 @@
     background: var(--surface2);
     border: 1px solid var(--border);
     color: var(--text-muted);
-    padding: 9px 17px;
+    padding: 9px 16px;
     border-radius: 10px;
     font-family: 'Heebo', sans-serif;
     font-size: 14px;
@@ -485,7 +665,7 @@
   .btn-cancel:hover { color: var(--text); }
 
   .btn-save {
-    background: linear-gradient(135deg, var(--accent), #9b8bf8);
+    background: linear-gradient(135deg, var(--accent), color-mix(in srgb,var(--accent) 70%,white));
     border: none;
     color: white;
     padding: 9px 20px;
@@ -495,29 +675,35 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(124,106,247,0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb,var(--accent) 35%,transparent);
   }
-  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(124,106,247,0.4); }
+  .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-  @media (max-width: 560px) {
-    .header { padding: 14px; }
-    .header-stats { gap: 6px; }
-    .stat-pill { padding: 3px 7px; font-size: 11px; }
-    .page { padding: 14px 10px 80px; gap: 12px; }
+  @media (max-width: 580px) {
+    .header { padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
+    .header-center { order: 3; width: 100%; justify-content: flex-start; }
+    .page { padding: 12px 10px 80px; gap: 12px; }
     .task-actions { opacity: 1; }
     .status-btn { padding: 4px 5px; font-size: 10px; }
-    .room-card-header { flex-wrap: wrap; gap: 10px; }
+    .theme-panel { left: 10px; right: 10px; min-width: unset; }
   }
 </style>
 </head>
-<body>
+<body data-theme="dark">
+
+<!-- Theme panel -->
+<div class="theme-panel hidden" id="themePanel">
+  <h4>🎨 בחר ערכת צבעים</h4>
+  <div class="theme-grid" id="themeGrid"></div>
+</div>
 
 <div class="header">
   <div class="header-left">
     <span class="app-icon">🏠</span>
     <span class="app-title">מטלות הבית</span>
   </div>
-  <div class="header-stats" id="headerStats"></div>
+  <div class="header-center" id="headerStats"></div>
+  <button class="theme-btn" onclick="toggleThemePanel()" title="שנה ערכת צבעים">🎨</button>
 </div>
 
 <div class="page" id="pageContent"></div>
@@ -557,38 +743,73 @@
 </div>
 
 <script>
+// ===== THEMES =====
+const THEMES = [
+  { id:'dark',    name:'כהה',      dot:'linear-gradient(135deg,#7c6af7,#f7a26a)', desc:'ברירת מחדל' },
+  { id:'light',   name:'בהיר',     dot:'linear-gradient(135deg,#6355e8,#f0812a)', desc:'קלאסי' },
+  { id:'pastel',  name:'פסטל',     dot:'linear-gradient(135deg,#d45faa,#f0a040)', desc:'רך ועדין' },
+  { id:'mint',    name:'מינט',     dot:'linear-gradient(135deg,#1a9e72,#f07040)', desc:'טבעי' },
+  { id:'ocean',   name:'אוקיינוס', dot:'linear-gradient(135deg,#38bdf8,#fb923c)', desc:'עמוק' },
+  { id:'sunset',  name:'שקיעה',    dot:'linear-gradient(135deg,#f97316,#ec4899)', desc:'חם' },
+  { id:'sand',    name:'חול',      dot:'linear-gradient(135deg,#b07030,#508060)', desc:'ארצי' },
+];
+
+function buildThemeGrid() {
+  const cur = document.body.getAttribute('data-theme');
+  document.getElementById('themeGrid').innerHTML = THEMES.map(t => `
+    <div class="theme-option ${t.id===cur?'active':''}" onclick="setTheme('${t.id}')">
+      <div class="theme-dot" style="background:${t.dot}"></div>
+      <span>${t.name}</span>
+    </div>
+  `).join('');
+}
+
+function setTheme(id) {
+  document.body.setAttribute('data-theme', id);
+  localStorage.setItem('homeTasksTheme', id);
+  buildThemeGrid();
+}
+
+function toggleThemePanel() {
+  const p = document.getElementById('themePanel');
+  p.classList.toggle('hidden');
+  if (!p.classList.contains('hidden')) buildThemeGrid();
+}
+
+// close panel on outside click
+document.addEventListener('click', e => {
+  const panel = document.getElementById('themePanel');
+  if (!panel.classList.contains('hidden') &&
+      !panel.contains(e.target) &&
+      !e.target.closest('.theme-btn')) {
+    panel.classList.add('hidden');
+  }
+});
+
 // ===== EMOJI DATA =====
 const EMOJI_CATEGORIES = {
   'ניקיון 🧹': ['🧹','🧺','🧻','🧽','🪣','💧','🫧','🧴','🧼','🪥','🪠','♻️','🗑️'],
-  'מטבח 🍳': ['🍳','🥗','🍽️','🥄','🍴','☕','🧃','🫙','🥡','🍜','🥘','🫕','🧆'],
-  'כלים 🔧': ['🔧','🔨','🪛','🔩','⚙️','🧲','💡','🔌','🪜','🗝️','🔑','📦','🧰'],
-  'טבע 🌿': ['🌿','🌸','🌺','🌻','🍀','🌴','🌵','💐','🪴','☀️','🌙','🌈','🌊'],
-  'כללי ⭐': ['✅','❌','⚠️','🔥','⭐','🌟','💪','👍','❤️','🎯','🏆','✨','💎','🎁'],
+  'מטבח 🍳':  ['🍳','🥗','🍽️','🥄','🍴','☕','🧃','🫙','🥡','🍜','🥘','🫕','🧆'],
+  'כלים 🔧':  ['🔧','🔨','🪛','🔩','⚙️','🧲','💡','🔌','🪜','🗝️','🔑','📦','🧰'],
+  'טבע 🌿':   ['🌿','🌸','🌺','🌻','🍀','🌴','🌵','💐','🪴','☀️','🌙','🌈','🌊'],
+  'כללי ⭐':  ['✅','❌','⚠️','🔥','⭐','🌟','💪','👍','❤️','🎯','🏆','✨','💎','🎁'],
 };
 const ALL_EMOJIS = [...new Set(Object.values(EMOJI_CATEGORIES).flat())];
 const ROOM_EMOJIS_EXTRA = ['🏠','🛁','🚽','🛏️','💻','🛋️','🌿','🍳','🚿','🪑','🚪','💡','🧹','🏡','🎨','📚','🎵','🏋️','🎮','🛒'];
 
-// ===== STATUS CONFIG =====
-// status: 'pending' | 'done' | 'na'
-const STATUS = {
-  pending: { label: 'ממתין',      icon: '⏳', cls: 'active-pending' },
-  done:    { label: 'בוצע',       icon: '✅', cls: 'active-done'    },
-  na:      { label: 'לא רלוונטי', icon: '➖', cls: 'active-na'      },
-};
-
 // ===== STATE =====
 const defaultRooms = [
-  { id: 'kitchen',  name: 'מטבח',       emoji: '🍳', tasks: [], collapsed: false },
-  { id: 'bathroom', name: 'חדר אמבטיה', emoji: '🛁', tasks: [], collapsed: false },
-  { id: 'toilet',   name: 'שירותים',    emoji: '🚽', tasks: [], collapsed: false },
-  { id: 'bedroom',  name: 'חדר שינה',   emoji: '🛏️', tasks: [], collapsed: false },
-  { id: 'office',   name: 'חדר עבודה',  emoji: '💻', tasks: [], collapsed: false },
-  { id: 'living',   name: 'סלון',       emoji: '🛋️', tasks: [], collapsed: false },
-  { id: 'balcony',  name: 'מרפסת',      emoji: '🌿', tasks: [], collapsed: false },
+  { id:'kitchen',  name:'מטבח',       emoji:'🍳', tasks:[], collapsed:false },
+  { id:'bathroom', name:'חדר אמבטיה', emoji:'🛁', tasks:[], collapsed:false },
+  { id:'toilet',   name:'שירותים',    emoji:'🚽', tasks:[], collapsed:false },
+  { id:'bedroom',  name:'חדר שינה',   emoji:'🛏️', tasks:[], collapsed:false },
+  { id:'office',   name:'חדר עבודה',  emoji:'💻', tasks:[], collapsed:false },
+  { id:'living',   name:'סלון',       emoji:'🛋️', tasks:[], collapsed:false },
+  { id:'balcony',  name:'מרפסת',      emoji:'🌿', tasks:[], collapsed:false },
 ];
 
 function loadData() {
-  try { const s = localStorage.getItem('homeTasks_v4'); if (s) return JSON.parse(s); } catch(e) {}
+  try { const s=localStorage.getItem('homeTasks_v4'); if(s) return JSON.parse(s); } catch(e) {}
   return { rooms: defaultRooms };
 }
 function saveData() { localStorage.setItem('homeTasks_v4', JSON.stringify(appState)); }
@@ -596,12 +817,11 @@ function saveData() { localStorage.setItem('homeTasks_v4', JSON.stringify(appSta
 let appState = loadData();
 
 // modal state
-let mTaskRoomId = null, mTaskId = null, mEmojiCat = null, mEmoji = '✅';
-let mRoomId = null, mRoomEmojiCat = null, mRoomEmoji = '';
+let mTaskRoomId=null, mTaskId=null, mEmojiCat=null, mEmoji='✅';
+let mRoomId=null, mRoomEmojiCat=null, mRoomEmoji='';
 
 // ===== RENDER =====
 function render() {
-  // header stats
   let totalPending=0, totalDone=0, totalNa=0;
   appState.rooms.forEach(r => r.tasks.forEach(t => {
     if(t.status==='done') totalDone++;
@@ -610,35 +830,34 @@ function render() {
   }));
 
   const statsEl = document.getElementById('headerStats');
-  statsEl.innerHTML = (totalPending+totalDone+totalNa) > 0 ? `
+  statsEl.innerHTML = (totalPending+totalDone+totalNa)>0 ? `
     <span class="stat-pill pending">⏳ ${totalPending}</span>
     <span class="stat-pill done">✅ ${totalDone}</span>
     <span class="stat-pill na">➖ ${totalNa}</span>
   ` : '';
 
-  // rooms
   document.getElementById('pageContent').innerHTML = appState.rooms.map(room => {
-    const total   = room.tasks.length;
-    const done    = room.tasks.filter(t=>t.status==='done').length;
-    const pending = room.tasks.filter(t=>t.status==='pending'||!t.status).length;
-    const pct     = total ? Math.round((done/total)*100) : 0;
+    const total  = room.tasks.length;
+    const done   = room.tasks.filter(t=>t.status==='done').length;
+    const pending= room.tasks.filter(t=>!t.status||t.status==='pending').length;
+    const pct    = total ? Math.round((done/total)*100) : 0;
 
-    const tasksHTML = room.tasks.length === 0
+    const tasksHTML = room.tasks.length===0
       ? `<div class="room-empty">אין מטלות — לחץ "+ הוסף" להתחלה 👆</div>`
       : room.tasks.map(t => {
-          const status = t.status || 'pending';
+          const status = t.status||'pending';
           return `
             <div class="task-item" data-status="${status}" id="task-${t.id}">
               <button class="task-emoji-btn" onclick="openEditTaskModal('${room.id}','${t.id}',true)">${t.emoji}</button>
               <span class="task-text" onclick="startInlineEdit('${room.id}','${t.id}')">${t.text}</span>
               <div class="status-selector">
-                <button class="status-btn ${status==='pending'?'active-pending':''}" onclick="setStatus('${room.id}','${t.id}','pending')" title="ממתין לביצוע">⏳ ממתין</button>
-                <button class="status-btn ${status==='done'?'active-done':''}"    onclick="setStatus('${room.id}','${t.id}','done')"    title="בוצע">✅ בוצע</button>
-                <button class="status-btn ${status==='na'?'active-na':''}"        onclick="setStatus('${room.id}','${t.id}','na')"      title="לא רלוונטי">➖ לא רלוונטי</button>
+                <button class="status-btn ${status==='pending'?'active-pending':''}" onclick="setStatus('${room.id}','${t.id}','pending')">⏳ ממתין</button>
+                <button class="status-btn ${status==='done'?'active-done':''}"    onclick="setStatus('${room.id}','${t.id}','done')">✅ בוצע</button>
+                <button class="status-btn ${status==='na'?'active-na':''}"        onclick="setStatus('${room.id}','${t.id}','na')">➖ לא רלוונטי</button>
               </div>
               <div class="task-actions">
-                <button class="task-action-btn" onclick="openEditTaskModal('${room.id}','${t.id}',false)" title="ערוך">✏️</button>
-                <button class="task-action-btn delete" onclick="deleteTask('${room.id}','${t.id}')" title="מחק">🗑️</button>
+                <button class="task-action-btn" onclick="openEditTaskModal('${room.id}','${t.id}',false)">✏️</button>
+                <button class="task-action-btn delete" onclick="deleteTask('${room.id}','${t.id}')">🗑️</button>
               </div>
             </div>
           `;
@@ -652,7 +871,7 @@ function render() {
             <div>
               <span class="room-title" onclick="openRoomModal('${room.id}')">${room.name}</span>
               <div class="room-meta">
-                ${total > 0
+                ${total>0
                   ? `<div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
                      <span>${done}/${total} בוצעו · ${pending} ממתינות</span>`
                   : `<span>אין מטלות</span>`}
@@ -672,54 +891,47 @@ function render() {
 
 // ===== ACTIONS =====
 function toggleCollapse(id) {
-  const r = appState.rooms.find(r=>r.id===id);
-  if (r) { r.collapsed = !r.collapsed; saveData(); render(); }
+  const r=appState.rooms.find(r=>r.id===id);
+  if(r){r.collapsed=!r.collapsed;saveData();render();}
 }
-
 function setStatus(roomId, taskId, status) {
-  const r = appState.rooms.find(r=>r.id===roomId);
-  const t = r?.tasks.find(t=>t.id===taskId);
-  if (t) { t.status = status; saveData(); render(); }
+  const t=appState.rooms.find(r=>r.id===roomId)?.tasks.find(t=>t.id===taskId);
+  if(t){t.status=status;saveData();render();}
 }
-
 function deleteTask(roomId, taskId) {
-  const r = appState.rooms.find(r=>r.id===roomId);
-  if (r) { r.tasks = r.tasks.filter(t=>t.id!==taskId); saveData(); render(); }
+  const r=appState.rooms.find(r=>r.id===roomId);
+  if(r){r.tasks=r.tasks.filter(t=>t.id!==taskId);saveData();render();}
 }
-
 function startInlineEdit(roomId, taskId) {
-  const r = appState.rooms.find(r=>r.id===roomId);
-  const t = r?.tasks.find(t=>t.id===taskId);
-  if (!t) return;
-  const el = document.querySelector(`#task-${taskId} .task-text`);
-  if (!el) return;
-  const input = document.createElement('input');
-  input.className = 'inline-edit-input';
-  input.value = t.text; input.dir = 'rtl';
+  const r=appState.rooms.find(r=>r.id===roomId);
+  const t=r?.tasks.find(t=>t.id===taskId); if(!t) return;
+  const el=document.querySelector(`#task-${taskId} .task-text`); if(!el) return;
+  const input=document.createElement('input');
+  input.className='inline-edit-input'; input.value=t.text; input.dir='rtl';
   el.replaceWith(input); input.focus(); input.select();
-  const commit = () => { const v=input.value.trim(); if(v){t.text=v;saveData();} render(); };
-  input.addEventListener('blur', commit);
-  input.addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();commit();} if(e.key==='Escape')render(); });
+  const commit=()=>{const v=input.value.trim();if(v){t.text=v;saveData();}render();};
+  input.addEventListener('blur',commit);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();commit();}if(e.key==='Escape')render();});
 }
 
 // ===== EMOJI HELPERS =====
 function buildCatBtns(containerId, activeCat, clickFn) {
-  document.getElementById(containerId).innerHTML = Object.keys(EMOJI_CATEGORIES).map(cat =>
+  document.getElementById(containerId).innerHTML=Object.keys(EMOJI_CATEGORIES).map(cat=>
     `<button class="emoji-cat-btn${cat===activeCat?' active':''}" onclick="${clickFn}('${encodeURIComponent(cat)}')">${cat}</button>`
   ).join('');
 }
 function buildGrid(gridId, searchId, activeCat, selected, clickFn) {
-  const search = (document.getElementById(searchId)?.value||'').toLowerCase();
-  let pool = (activeCat && EMOJI_CATEGORIES[activeCat]) ? EMOJI_CATEGORIES[activeCat] : ALL_EMOJIS;
-  if (search) pool = ALL_EMOJIS;
-  document.getElementById(gridId).innerHTML = pool.map(e =>
+  const search=(document.getElementById(searchId)?.value||'').toLowerCase();
+  let pool=(activeCat&&EMOJI_CATEGORIES[activeCat])?EMOJI_CATEGORIES[activeCat]:ALL_EMOJIS;
+  if(search) pool=ALL_EMOJIS;
+  document.getElementById(gridId).innerHTML=pool.map(e=>
     `<button class="emoji-opt${e===selected?' selected':''}" onclick="${clickFn}('${e}')">${e}</button>`
   ).join('');
 }
 
 // ===== TASK MODAL =====
 function openAddTaskModal(roomId) {
-  mTaskRoomId=roomId; mTaskId=null; mEmoji='✅'; mEmojiCat=null;
+  mTaskRoomId=roomId;mTaskId=null;mEmoji='✅';mEmojiCat=null;
   document.getElementById('modalTitle').textContent='➕ מטלה חדשה';
   document.getElementById('taskNameInput').value='';
   document.getElementById('emojiSearch').value='';
@@ -730,8 +942,8 @@ function openAddTaskModal(roomId) {
 }
 function openEditTaskModal(roomId, taskId, emojiOnly=false) {
   const r=appState.rooms.find(r=>r.id===roomId);
-  const t=r?.tasks.find(t=>t.id===taskId); if(!t) return;
-  mTaskRoomId=roomId; mTaskId=taskId; mEmoji=t.emoji; mEmojiCat=null;
+  const t=r?.tasks.find(t=>t.id===taskId);if(!t)return;
+  mTaskRoomId=roomId;mTaskId=taskId;mEmoji=t.emoji;mEmojiCat=null;
   document.getElementById('modalTitle').textContent=emojiOnly?"😊 שנה אימוג'י":'✏️ עריכת מטלה';
   document.getElementById('taskNameInput').value=t.text;
   document.getElementById('emojiSearch').value='';
@@ -740,71 +952,61 @@ function openEditTaskModal(roomId, taskId, emojiOnly=false) {
   document.getElementById('taskModal').style.display='flex';
   if(!emojiOnly) setTimeout(()=>document.getElementById('taskNameInput').focus(),80);
 }
-function setTaskCat(cat) {
-  const d=decodeURIComponent(cat); mEmojiCat=(mEmojiCat===d)?null:d;
-  buildCatBtns('emojiCategories',mEmojiCat,'setTaskCat');
-  buildGrid('emojiGrid','emojiSearch',mEmojiCat,mEmoji,'pickEmoji');
-}
-function pickEmoji(e) { mEmoji=e; buildGrid('emojiGrid','emojiSearch',mEmojiCat,mEmoji,'pickEmoji'); }
-function filterEmojis() { buildGrid('emojiGrid','emojiSearch',mEmojiCat,mEmoji,'pickEmoji'); }
-function closeTaskModal() { document.getElementById('taskModal').style.display='none'; }
-function handleTaskOverlay(e) { if(e.target===document.getElementById('taskModal'))closeTaskModal(); }
-function saveTask() {
+function setTaskCat(cat){const d=decodeURIComponent(cat);mEmojiCat=(mEmojiCat===d)?null:d;buildCatBtns('emojiCategories',mEmojiCat,'setTaskCat');buildGrid('emojiGrid','emojiSearch',mEmojiCat,mEmoji,'pickEmoji');}
+function pickEmoji(e){mEmoji=e;buildGrid('emojiGrid','emojiSearch',mEmojiCat,mEmoji,'pickEmoji');}
+function filterEmojis(){buildGrid('emojiGrid','emojiSearch',mEmojiCat,mEmoji,'pickEmoji');}
+function closeTaskModal(){document.getElementById('taskModal').style.display='none';}
+function handleTaskOverlay(e){if(e.target===document.getElementById('taskModal'))closeTaskModal();}
+function saveTask(){
   const text=document.getElementById('taskNameInput').value.trim();
   if(!text){document.getElementById('taskNameInput').focus();return;}
-  const r=appState.rooms.find(r=>r.id===mTaskRoomId); if(!r) return;
-  if(!mTaskId) {
-    r.tasks.push({id:Date.now().toString(), text, emoji:mEmoji, status:'pending'});
-  } else {
-    const t=r.tasks.find(t=>t.id===mTaskId);
-    if(t){t.text=text; t.emoji=mEmoji;}
-  }
-  saveData(); closeTaskModal(); render();
+  const r=appState.rooms.find(r=>r.id===mTaskRoomId);if(!r)return;
+  if(!mTaskId){r.tasks.push({id:Date.now().toString(),text,emoji:mEmoji,status:'pending'});}
+  else{const t=r.tasks.find(t=>t.id===mTaskId);if(t){t.text=text;t.emoji=mEmoji;}}
+  saveData();closeTaskModal();render();
 }
 
 // ===== ROOM MODAL =====
-function openRoomModal(roomId) {
-  const r=appState.rooms.find(r=>r.id===roomId); if(!r) return;
-  mRoomId=roomId; mRoomEmoji=r.emoji; mRoomEmojiCat=null;
+function openRoomModal(roomId){
+  const r=appState.rooms.find(r=>r.id===roomId);if(!r)return;
+  mRoomId=roomId;mRoomEmoji=r.emoji;mRoomEmojiCat=null;
   document.getElementById('roomNameInput').value=r.name;
   document.getElementById('roomEmojiSearch').value='';
-  buildRoomCatBtns(); buildRoomEmojiGrid();
+  buildRoomCatBtns();buildRoomEmojiGrid();
   document.getElementById('roomModal').style.display='flex';
   setTimeout(()=>document.getElementById('roomNameInput').focus(),80);
 }
-function buildRoomCatBtns() { buildCatBtns('roomEmojiCategories',mRoomEmojiCat,'setRoomCat'); }
-function buildRoomEmojiGrid() {
-  let pool=(mRoomEmojiCat && EMOJI_CATEGORIES[mRoomEmojiCat])
-    ? EMOJI_CATEGORIES[mRoomEmojiCat]
-    : [...new Set([...ROOM_EMOJIS_EXTRA,...ALL_EMOJIS])];
+function buildRoomCatBtns(){buildCatBtns('roomEmojiCategories',mRoomEmojiCat,'setRoomCat');}
+function buildRoomEmojiGrid(){
+  let pool=(mRoomEmojiCat&&EMOJI_CATEGORIES[mRoomEmojiCat])?EMOJI_CATEGORIES[mRoomEmojiCat]:[...new Set([...ROOM_EMOJIS_EXTRA,...ALL_EMOJIS])];
   document.getElementById('roomEmojiGrid').innerHTML=pool.map(e=>
     `<button class="emoji-opt${e===mRoomEmoji?' selected':''}" onclick="pickRoomEmoji('${e}')">${e}</button>`
   ).join('');
 }
-function setRoomCat(cat) {
-  const d=decodeURIComponent(cat); mRoomEmojiCat=(mRoomEmojiCat===d)?null:d;
-  buildRoomCatBtns(); buildRoomEmojiGrid();
-}
-function pickRoomEmoji(e) { mRoomEmoji=e; buildRoomEmojiGrid(); }
-function closeRoomModal() { document.getElementById('roomModal').style.display='none'; }
-function handleRoomOverlay(e) { if(e.target===document.getElementById('roomModal'))closeRoomModal(); }
-function saveRoom() {
+function setRoomCat(cat){const d=decodeURIComponent(cat);mRoomEmojiCat=(mRoomEmojiCat===d)?null:d;buildRoomCatBtns();buildRoomEmojiGrid();}
+function pickRoomEmoji(e){mRoomEmoji=e;buildRoomEmojiGrid();}
+function closeRoomModal(){document.getElementById('roomModal').style.display='none';}
+function handleRoomOverlay(e){if(e.target===document.getElementById('roomModal'))closeRoomModal();}
+function saveRoom(){
   const name=document.getElementById('roomNameInput').value.trim();
   if(!name){document.getElementById('roomNameInput').focus();return;}
   const r=appState.rooms.find(r=>r.id===mRoomId);
-  if(r){r.name=name; r.emoji=mRoomEmoji;}
-  saveData(); closeRoomModal(); render();
+  if(r){r.name=name;r.emoji=mRoomEmoji;}
+  saveData();closeRoomModal();render();
 }
 
 // ===== KEYBOARD =====
-document.addEventListener('keydown', e => {
-  if(e.key==='Escape'){closeTaskModal();closeRoomModal();}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeTaskModal();closeRoomModal();document.getElementById('themePanel').classList.add('hidden');}
   if(e.key==='Enter'){
     if(document.getElementById('taskModal').style.display!=='none'&&document.activeElement===document.getElementById('taskNameInput'))saveTask();
     if(document.getElementById('roomModal').style.display!=='none'&&document.activeElement===document.getElementById('roomNameInput'))saveRoom();
   }
 });
 
+// ===== INIT =====
+const savedTheme = localStorage.getItem('homeTasksTheme');
+if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
 render();
 </script>
 </body>
